@@ -1,0 +1,38 @@
+.latex:build:
+    stage: Testing and building modules
+    image: registry.gitlab.com/savushkin.i/environment/latex:ubuntu
+    script:
+        - cd ${BUILD_CONTEXT:-.}
+        - latexmk -xelatex -synctex=1 -jobname=${PROJECT_NAME} main.tex
+        - cd -
+    after_script:
+        - mv ${BUILD_CONTEXT:-.}/${PROJECT_NAME}.pdf ./${PROJECT_NAME}.pdf
+    artifacts:
+        paths:
+            - ${PROJECT_NAME}.pdf
+        expire_in: 30 days
+
+.latex:build:general:
+    extends:
+        - .latex:build
+        - .general-environment
+
+.latex:build:develop:
+    extends:
+        - .latex:build
+        - .develop-environment
+
+.latex:build:test:
+    extends:
+        - .latex:build
+        - .test-environment
+
+.latex:build:stage:
+    extends:
+        - .latex:build
+        - .stage-environment
+
+.latex:build:production:
+    extends:
+        - .latex:build
+        - .production-environment
