@@ -1,0 +1,24 @@
+include:
+    - local: /templates/gitlab-ci/common/stages.yml
+    - local: /templates/gitlab-ci/common/environments.yml
+    - local: /templates/gitlab-ci/common/docker-job-templates.yml
+
+build-and-publish-docker-image:chromium:
+    extends: .build-and-publish-docker-image
+    variables:
+        BUILD_CONTEXT: docker-images/chromium
+        IMAGE_NAME: chromium
+        IMAGE_TAG: alpine
+    only:
+        changes:
+            - docker-images/chromium/**/*
+
+build-and-publish-docker-image:ssh-exec:
+    extends: .build-and-publish-docker-image
+    variables:
+        BUILD_CONTEXT: docker-images/ssh
+        IMAGE_NAME: ssh
+        IMAGE_TAG: alpine
+    only:
+        changes:
+            - docker-images/ssh/**/*

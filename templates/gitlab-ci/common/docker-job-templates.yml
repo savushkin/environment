@@ -1,0 +1,43 @@
+.build-and-publish-docker-image:
+    stage: Build and publish artifacts
+    image: docker:latest
+    services:
+        - docker:dind
+    before_script:
+        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+        - cd ${BUILD_CONTEXT:-.}
+    after_script:
+        - docker logout $CI_REGISTRY
+    script:
+        - |
+            IMAGE=$CI_REGISTRY_IMAGE/$IMAGE_NAME
+            TAG=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
+            TAG_LATEST=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}"}-latest
+            docker build -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
+            docker push $IMAGE:$TAG
+            docker push $IMAGE:$TAG_LATEST
+
+.build-and-publish-docker-image:general:
+    extends:
+        - .build-and-publish-docker-image
+        - .general-environment
+
+.build-and-publish-docker-image:develop:
+    extends:
+        - .build-and-publish-docker-image
+        - .develop-environment
+
+.build-and-publish-docker-image:test:
+    extends:
+        - .build-and-publish-docker-image
+        - .test-environment
+
+.build-and-publish-docker-image:stage:
+    extends:
+        - .build-and-publish-docker-image
+        - .stage-environment
+
+.build-and-publish-docker-image:production:
+    extends:
+        - .build-and-publish-docker-image
+        - .production-environment

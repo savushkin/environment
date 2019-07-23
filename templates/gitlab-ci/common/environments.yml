@@ -1,0 +1,58 @@
+.general-environment:
+    variables:
+        PROJECT_CONFIGURATION: development
+    except:
+        refs:
+            - develop
+            - /^release\/.*$/
+            - master
+            - tags
+        variables:
+            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/
+
+.develop-environment:
+    variables:
+        PROJECT_CONFIGURATION: development
+    only:
+        refs:
+            - develop
+
+.test-environment:
+    variables:
+        PROJECT_CONFIGURATION: test
+    only:
+        refs:
+            - /^release\/.*$/
+
+.stage-environment:
+    variables:
+        PROJECT_CONFIGURATION: stage
+    only:
+        refs:
+            - master
+
+.production-environment:
+    variables:
+        PROJECT_CONFIGURATION: production
+    only:
+        refs:
+            - tags
+        variables:
+            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/
+
+.pages:
+    image: alpine:latest
+    stage: Publish pages
+    allow_failure: true
+    cache:
+        key: ${CI_PROJECT_NAME}-pages
+        paths:
+            - public/
+        policy: pull-push
+    variables:
+        GIT_STRATEGY: none
+    before_script:
+        - mkdir -p public
+    artifacts:
+        paths:
+            - public

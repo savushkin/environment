@@ -1,0 +1,6 @@
+stages:
+    - Building dependency
+    - Testing and building modules
+    - Build and publish artifacts
+    - Deploy artifacts
+    - Publish pages
