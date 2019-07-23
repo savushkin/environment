@@ -1,0 +1,10 @@
+.style:lint:
+    stage: Testing and building modules
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - $(npm bin)/stylelint "**/*.scss" --config .stylelintrc

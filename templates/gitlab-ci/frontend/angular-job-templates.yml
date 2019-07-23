@@ -1,0 +1,74 @@
+.ng:lint:
+    stage: Testing and building modules
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - $(npm bin)/ng lint ${PROJECT_NAME}
+
+.ng:test:
+    stage: Testing and building modules
+    image: registry.gitlab.com/savushkin.i/environment/chromium:alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    variables:
+        REPORTERS: junit,progress,kjhtml
+        BROWSERS: ChromiumHeadlessNoSandbox
+    script:
+        - $(npm bin)/ng test ${PROJECT_NAME} --browsers=${BROWSERS} --reporters ${REPORTERS} --watch=false --code-coverage
+    coverage: '/Statements.*?(\d+(?:\.\d+)?)%/'
+    artifacts:
+        reports:
+            junit:
+                - junit-report/TESTS*.xml
+        expire_in: 30 days
+        when: always
+        paths:
+            - coverage/
+
+.ng:build:
+    stage: Testing and building modules
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    dependencies: []
+    script:
+        - $(npm bin)/ng build ${PROJECT_NAME} --prod --configuration=${PROJECT_CONFIGURATION}
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - dist/${PROJECT_NAME}/
+
+.ng:build:general:
+    extends:
+        - .ng:build
+        - .general-environment
+
+.ng:build:develop:
+    extends:
+        - .ng:build
+        - .develop-environment
+
+.ng:build:test:
+    extends:
+        - .ng:build
+        - .test-environment
+
+.ng:build:stage:
+    extends:
+        - .ng:build
+        - .stage-environment
+
+.ng:build:production:
+    extends:
+        - .ng:build
+        - .production-environment

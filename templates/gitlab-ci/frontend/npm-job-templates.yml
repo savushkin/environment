@@ -1,0 +1,54 @@
+dependency:install:npm:
+    stage: Building dependency
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: push
+    script:
+        - npm ci
+    only:
+        changes:
+            - package*.json
+            - .npmrc
+
+.push-npm-package:
+    stage: Build and publish artifacts
+    image: node:lts-alpine
+    variables:
+        GIT_STRATEGY: none
+    before_script:
+        - echo "//${NPM_REGISTRY_URL}/:_authToken=${NPM_REGISTRY_TOKEN}" > ~/.npmrc
+        - cd ${BUILD_CONTEXT:-.}
+        - echo "registry = https://${NPM_REGISTRY_URL}/" > .npmrc
+    script:
+        - npm pack
+        - npm publish
+    after_script:
+        - rm ~/.npmrc
+
+.push-npm-package:general:
+    extends:
+        - .push-npm-package
+        - .general-environment
+
+.push-npm-package:develop:
+    extends:
+        - .push-npm-package
+        - .develop-environment
+
+.push-npm-package:test:
+    extends:
+        - .push-npm-package
+        - .test-environment
+
+.push-npm-package:stage:
+    extends:
+        - .push-npm-package
+        - .stage-environment
+
+.push-npm-package:production:
+    extends:
+        - .push-npm-package
+        - .production-environment
