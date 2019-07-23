@@ -1,4 +1,4 @@
-.build-and-publish-docker-image:
+.docker:image:build-and-publish:
     stage: Build and publish artifacts
     image: docker:latest
     services:
@@ -17,27 +17,27 @@
             docker push $IMAGE:$TAG
             docker push $IMAGE:$TAG_LATEST
 
-.build-and-publish-docker-image:general:
+.docker:image:build-and-publish:general:
     extends:
-        - .build-and-publish-docker-image
+        - .docker:image:build-and-publish
         - .general-environment
 
-.build-and-publish-docker-image:develop:
+.docker:image:build-and-publish:develop:
     extends:
-        - .build-and-publish-docker-image
+        - .docker:image:build-and-publish
         - .develop-environment
 
-.build-and-publish-docker-image:test:
+.docker:image:build-and-publish:test:
     extends:
-        - .build-and-publish-docker-image
+        - .docker:image:build-and-publish
         - .test-environment
 
-.build-and-publish-docker-image:stage:
+.docker:image:build-and-publish:stage:
     extends:
-        - .build-and-publish-docker-image
+        - .docker:image:build-and-publish
         - .stage-environment
 
-.build-and-publish-docker-image:production:
+.docker:image:build-and-publish:production:
     extends:
-        - .build-and-publish-docker-image
+        - .docker:image:build-and-publish
         - .production-environment

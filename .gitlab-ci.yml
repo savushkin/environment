@@ -3,8 +3,8 @@ include:
     - local: /templates/gitlab-ci/common/environments.yml
     - local: /templates/gitlab-ci/common/docker-job-templates.yml
 
-build-and-publish-docker-image:chromium:
-    extends: .build-and-publish-docker-image
+docker:image:build-and-publish:stage:chromium:
+    extends: .docker:image:build-and-publish:stage
     variables:
         BUILD_CONTEXT: docker-images/chromium
         IMAGE_NAME: chromium
@@ -13,8 +13,8 @@ build-and-publish-docker-image:chromium:
         changes:
             - docker-images/chromium/**/*
 
-build-and-publish-docker-image:ssh-exec:
-    extends: .build-and-publish-docker-image
+docker:image:build-and-publish:stage:ssh-exec:
+    extends: .docker:image:build-and-publish:stage
     variables:
         BUILD_CONTEXT: docker-images/ssh
         IMAGE_NAME: ssh
