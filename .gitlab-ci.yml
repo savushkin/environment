@@ -13,7 +13,7 @@ docker:image:build-and-publish:stage:chromium:
         changes:
             - docker-images/chromium/**/*
 
-docker:image:build-and-publish:stage:ssh-exec:
+docker:image:build-and-publish:stage:ssh:
     extends: .docker:image:build-and-publish:stage
     variables:
         BUILD_CONTEXT: docker-images/ssh
@@ -22,3 +22,13 @@ docker:image:build-and-publish:stage:ssh-exec:
     only:
         changes:
             - docker-images/ssh/**/*
+
+docker:image:build-and-publish:stage:latex:
+    extends: .docker:image:build-and-publish:stage
+    variables:
+        BUILD_CONTEXT: docker-images/latex
+        IMAGE_NAME: latex
+        IMAGE_TAG: ubuntu
+    only:
+        changes:
+            - docker-images/latex/**/*
