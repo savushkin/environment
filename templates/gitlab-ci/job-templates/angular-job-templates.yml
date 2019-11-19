@@ -10,7 +10,7 @@
         - $(npm bin)/ng lint ${PROJECT_NAME}
     except:
         variables:
-            - $SKIP_LINT == true
+            - $SKIP_LINT
 
 .ng:test:
     stage: Testing and building modules
@@ -44,7 +44,7 @@
             - coverage/
     except:
         variables:
-            - $SKIP_TEST == true
+            - $SKIP_TEST
 
 .ng:build:
     stage: Testing and building modules
