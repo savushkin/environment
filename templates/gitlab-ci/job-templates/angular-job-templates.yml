@@ -8,6 +8,9 @@
         policy: pull
     script:
         - $(npm bin)/ng lint ${PROJECT_NAME}
+    except:
+        variables:
+            - $SKIP_LINT == true
 
 .ng:test:
     stage: Testing and building modules
@@ -39,6 +42,9 @@
         when: always
         paths:
             - coverage/
+    except:
+        variables:
+            - $SKIP_TEST == true
 
 .ng:build:
     stage: Testing and building modules
