@@ -2,9 +2,6 @@ docker:image:build-and-publish:stage:latex:
     extends: .docker:image:build-and-publish:stage
     variables:
         BUILD_CONTEXT: docker-images/latex
-        DOCKER_REGISTRY_USERNAME: gitlab-ci-token
-        DOCKER_REGISTRY_PASSWORD: $CI_BUILD_TOKEN
-        DOCKER_REGISTRY_URL: $CI_REGISTRY
         IMAGE_NAME: $CI_REGISTRY_IMAGE/latex
         IMAGE_TAG: ubuntu
     only:

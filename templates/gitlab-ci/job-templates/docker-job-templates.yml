@@ -4,10 +4,10 @@
     services:
         - docker:dind
     before_script:
-        - docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY_URL}
+        - docker login -u ${DOCKER_REGISTRY_USERNAME:-gitlab-ci-token} -p ${DOCKER_REGISTRY_PASSWORD:-${CI_BUILD_TOKEN}} ${DOCKER_REGISTRY_URL:-${CI_REGISTRY}}
         - cd ${BUILD_CONTEXT:-.}
     after_script:
-        - docker logout ${DOCKER_REGISTRY_URL}
+        - docker logout ${DOCKER_REGISTRY_URL:-${CI_REGISTRY}}
     script:
         - |
             IMAGE=${IMAGE_NAME:-$CI_REGISTRY_IMAGE}
