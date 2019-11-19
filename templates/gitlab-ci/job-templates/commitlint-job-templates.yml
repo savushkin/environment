@@ -1,0 +1,35 @@
+.commitlint:lint:
+    stage: Testing and building modules
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - echo "$CI_COMMIT_MESSAGE" | $(npm bin)/commitlint
+
+.commitlint:lint:general:
+    extends:
+        - .commitlint:lint
+        - .general-environment
+
+.commitlint:lint:develop:
+    extends:
+        - .commitlint:lint
+        - .develop-environment
+
+.commitlint:lint:test:
+    extends:
+        - .commitlint:lint
+        - .test-environment
+
+.commitlint:lint:stage:
+    extends:
+        - .commitlint:lint
+        - .stage-environment
+
+.commitlint:lint:production:
+    extends:
+        - .commitlint:lint
+        - .production-environment

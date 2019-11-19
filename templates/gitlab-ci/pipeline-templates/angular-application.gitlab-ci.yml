@@ -1,0 +1,62 @@
+ng:lint:application:
+    extends:
+        - .ng:lint
+        - .angular-application
+
+ng:test:application:
+    extends:
+        - .ng:test
+        - .angular-application
+
+ng:build:general:application:
+    extends:
+        - .ng:build:general
+        - .angular-application
+
+ng:build:develop:application:
+    extends:
+        - .ng:build:develop
+        - .angular-application
+
+ng:build:test:application:
+    extends:
+        - .ng:build:test
+        - .angular-application
+
+ng:build:stage:application:
+    extends:
+        - .ng:build:stage
+        - .angular-application
+
+ng:build:production:application:
+    extends:
+        - .ng:build:production
+        - .angular-application
+
+docker:image:build-and-publish:develop:application:
+    dependencies:
+        - ng:build:develop:application
+    extends:
+        - .docker:image:build-and-publish:develop
+        - .angular-application
+
+docker:image:build-and-publish:test:application:
+    dependencies:
+        - ng:build:test:application
+    extends:
+        - .docker:image:build-and-publish:test
+        - .angular-application
+
+docker:image:build-and-publish:stage:application:
+    dependencies:
+        - ng:build:stage:application
+    extends:
+        - .docker:image:build-and-publish:stage
+        - .angular-application
+
+docker:image:build-and-publish:production:application:
+    dependencies:
+        - ng:build:production:application
+    extends:
+        - .docker:image:build-and-publish:production
+        - .angular-application

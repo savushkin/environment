@@ -1,0 +1,35 @@
+.style:lint:
+    stage: Testing and building modules
+    image: node:lts-alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    script:
+        - $(npm bin)/stylelint "**/*.scss" --config .stylelintrc
+
+.style:lint:general:
+    extends:
+        - .style:lint
+        - .general-environment
+
+.style:lint:develop:
+    extends:
+        - .style:lint
+        - .develop-environment
+
+.style:lint:test:
+    extends:
+        - .style:lint
+        - .test-environment
+
+.style:lint:stage:
+    extends:
+        - .style:lint
+        - .stage-environment
+
+.style:lint:production:
+    extends:
+        - .style:lint
+        - .production-environment

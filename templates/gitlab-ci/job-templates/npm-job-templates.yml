@@ -1,4 +1,4 @@
-dependency:install:npm:
+npm:dependency:install:
     stage: Building dependency
     image: node:lts-alpine
     cache:
@@ -13,14 +13,14 @@ dependency:install:npm:
             - package*.json
             - .npmrc
 
-.push-npm-package:
+.npm:push-package:
     stage: Build and publish artifacts
     image: node:lts-alpine
     variables:
         GIT_STRATEGY: none
     before_script:
         - echo "//${NPM_REGISTRY_URL}/:_authToken=${NPM_REGISTRY_TOKEN}" > ~/.npmrc
-        - cd ${BUILD_CONTEXT:-.}
+        - cd dist/${PROJECT_NAME}/
         - echo "registry = https://${NPM_REGISTRY_URL}/" > .npmrc
     script:
         - npm pack
@@ -28,27 +28,27 @@ dependency:install:npm:
     after_script:
         - rm ~/.npmrc
 
-.push-npm-package:general:
+.npm:push-package:general:
     extends:
-        - .push-npm-package
+        - .npm:push-package
         - .general-environment
 
-.push-npm-package:develop:
+.npm:push-package:develop:
     extends:
-        - .push-npm-package
+        - .npm:push-package
         - .develop-environment
 
-.push-npm-package:test:
+.npm:push-package:test:
     extends:
-        - .push-npm-package
+        - .npm:push-package
         - .test-environment
 
-.push-npm-package:stage:
+.npm:push-package:stage:
     extends:
-        - .push-npm-package
+        - .npm:push-package
         - .stage-environment
 
-.push-npm-package:production:
+.npm:push-package:production:
     extends:
-        - .push-npm-package
+        - .npm:push-package
         - .production-environment

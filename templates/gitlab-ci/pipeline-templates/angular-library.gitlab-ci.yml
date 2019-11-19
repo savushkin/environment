@@ -1,0 +1,63 @@
+ng:lint:library:
+    extends: 
+        - .ng:lint
+        - .angular-library
+
+ng:test:library:
+    extends: 
+        - .ng:test
+        - .angular-library
+    before_script:
+        - $(npm bin)/ng build ${PROJECT_NAME} --prod --configuration=prod
+        - npm run ci:build:before_script --if-present
+
+ng:build:library:
+    extends: 
+        - .ng:build
+        - .angular-library
+    variables:
+        PROJECT_CONFIGURATION: prod
+    before_script:
+        - cd projects/$PROJECT_NAME
+        - npm version --allow-same-version ${CI_COMMIT_TAG:-"v$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
+        - cd -
+        - npm run ci:build:before_script --if-present
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - dist/${PROJECT_NAME}/
+            - projects/${PROJECT_NAME}/package.json
+
+npm:push-package:general:library:
+    when: manual
+    extends:
+        - .npm:push-package:general
+        - .general-environment-defenition
+        - .angular-library
+
+npm:push-package:develop:library:
+    when: manual
+    extends:
+        - .npm:push-package:develop
+        - .develop-environment-defenition
+        - .angular-library
+
+npm:push-package:test:library:
+    when: manual
+    extends:
+        - .npm:push-package:test
+        - .test-environment-defenition
+        - .angular-library
+
+npm:push-package:stage:library:
+    when: manual
+    extends:
+        - .npm:push-package:stage
+        - .stage-environment-defenition
+        - .angular-library
+
+npm:push-package:production:library:
+    extends:
+        - .npm:push-package:production
+        - .production-environment-defenition
+        - .angular-library
