@@ -56,3 +56,28 @@
     artifacts:
         paths:
             - public
+                
+.pages:general:
+    extends:
+        - .pages
+        - .general-environment
+
+.pages:develop:
+    extends:
+        - .pages
+        - .develop-environment
+
+.pages:test:
+    extends:
+        - .pages
+        - .test-environment
+
+.pages:stage:
+    extends:
+        - .pages
+        - .stage-environment
+
+.pages:production:
+    extends:
+        - .pages
+        - .production-environment

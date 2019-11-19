@@ -1,34 +1,9 @@
 include:
-    - local: /templates/gitlab-ci/common/stages.yml
-    - local: /templates/gitlab-ci/common/environments.yml
-    - local: /templates/gitlab-ci/common/docker-job-templates.yml
+    - local: /templates/gitlab-ci/pipeline-templates/stages.yml
+    - local: /templates/gitlab-ci/pipeline-templates/environments.yml
+    - local: /templates/gitlab-ci/job-templates/docker-job-templates.yml
 
-docker:image:build-and-publish:stage:chromium:
-    extends: .docker:image:build-and-publish:stage
-    variables:
-        BUILD_CONTEXT: docker-images/chromium
-        IMAGE_NAME: chromium
-        IMAGE_TAG: alpine
-    only:
-        changes:
-            - docker-images/chromium/**/*
+    - local: /docker-images/builder/gitlab-ci.yml
+    - local: /docker-images/chromium/gitlab-ci.yml
+    - local: /docker-images/latex/gitlab-ci.yml
 
-docker:image:build-and-publish:stage:ssh:
-    extends: .docker:image:build-and-publish:stage
-    variables:
-        BUILD_CONTEXT: docker-images/ssh
-        IMAGE_NAME: ssh
-        IMAGE_TAG: alpine
-    only:
-        changes:
-            - docker-images/ssh/**/*
-
-docker:image:build-and-publish:stage:latex:
-    extends: .docker:image:build-and-publish:stage
-    variables:
-        BUILD_CONTEXT: docker-images/latex
-        IMAGE_NAME: latex
-        IMAGE_TAG: ubuntu
-    only:
-        changes:
-            - docker-images/latex/**/*

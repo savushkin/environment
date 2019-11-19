@@ -1,6 +1,6 @@
 FROM node:lts-alpine
 
-LABEL maintainer="Savushkin Ivan <ivan@savushkin.me>"
+LABEL maintainer="Ivan Savushkin <ivan@savushkin.me>"
 
 RUN apk add --no-cache chromium nss \
 && rm -rf /var/lib/apt/lists/* /var/cache/apk/* /usr/share/man /tmp/*

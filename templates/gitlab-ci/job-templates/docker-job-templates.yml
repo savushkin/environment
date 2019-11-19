@@ -4,16 +4,16 @@
     services:
         - docker:dind
     before_script:
-        - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+        - docker login -u ${DOCKER_REGISTRY_USERNAME} -p ${DOCKER_REGISTRY_PASSWORD} ${DOCKER_REGISTRY_URL}
         - cd ${BUILD_CONTEXT:-.}
     after_script:
-        - docker logout $CI_REGISTRY
+        - docker logout ${DOCKER_REGISTRY_URL}
     script:
         - |
-            IMAGE=$CI_REGISTRY_IMAGE/$IMAGE_NAME
+            IMAGE=${IMAGE_NAME:-$CI_REGISTRY_IMAGE}
             TAG=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
             TAG_LATEST=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}"}-latest
-            docker build -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
+            docker build $DOCKER_BUILD_ARGS -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
             docker push $IMAGE:$TAG
             docker push $IMAGE:$TAG_LATEST
 

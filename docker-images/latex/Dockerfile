@@ -1,5 +1,5 @@
 FROM ubuntu:latest
-LABEL maintainer="Savushkin Ivan <ivan@savushkin.me>"
+LABEL maintainer="Ivan Savushkin <ivan@savushkin.me>"
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV DEBCONF_NONINTERACTIVE_SEEN true
