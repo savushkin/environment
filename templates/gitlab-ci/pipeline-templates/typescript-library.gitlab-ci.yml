@@ -19,6 +19,7 @@ typescript:build:library:
         expire_in: 30 days
         paths:
             - dist/$PROJECT_NAME
+            - README.md
             - package.json
             - package-lock.json
 
