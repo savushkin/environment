@@ -12,7 +12,7 @@ typescript:build:library:
         - npm version --allow-same-version ${CI_COMMIT_TAG:-"v$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
         - npm run ci:build:before_script --if-present
     script:
-        - tsc -p .
+        - $(npm bin)/tsc -p .
     after_script:
         - npm run ci:build:after_script --if-present
     artifacts:
