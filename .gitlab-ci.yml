@@ -6,4 +6,5 @@ include:
     - local: /docker-images/builder/gitlab-ci.yml
     - local: /docker-images/chromium/gitlab-ci.yml
     - local: /docker-images/latex/gitlab-ci.yml
+    - local: /docker-images/vagrant/gitlab-ci.yml
 

@@ -1,0 +1,9 @@
+docker:image:build-and-publish:stage:builder:
+    extends: .docker:image:build-and-publish:stage
+    variables:
+        BUILD_CONTEXT: docker-images/vagrant
+        IMAGE_NAME: $CI_REGISTRY_IMAGE/vagrant
+        IMAGE_TAG: ubuntu
+    only:
+        changes:
+            - docker-images/builder/**/*
