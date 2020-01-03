@@ -6,4 +6,4 @@ docker:image:build-and-publish:stage:builder:
         IMAGE_TAG: ubuntu
     only:
         changes:
-            - docker-images/builder/**/*
+            - docker-images/vagrant/**/*
