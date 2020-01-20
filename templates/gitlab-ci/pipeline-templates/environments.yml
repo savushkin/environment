@@ -19,8 +19,8 @@
             - develop
     except:
         variables:
-            - $RELEASE_BRANCH == "develop"
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
+            - $RELEASE_BRANCH == "develop"
 
 .test-environment:
     variables:

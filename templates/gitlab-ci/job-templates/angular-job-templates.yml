@@ -77,8 +77,6 @@
 .ng:build:
     stage: Testing and building modules
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
-    tags:
-      - build-front
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
