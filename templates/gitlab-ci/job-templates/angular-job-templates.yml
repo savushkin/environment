@@ -1,20 +1,24 @@
 .ng:lint:
     stage: Testing and building modules
-    image: node:lts-alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
             - node_modules/
         policy: pull
     script:
-        - $(npm bin)/ng lint ${PROJECT_NAME}
+        - $(npm bin)/ng lint ${PROJECT_NAME:-${CI_PROJECT_NAME}}
+    rules:
+        -   if: "$IGNORE_LINT == $CI_PROJECT_NAME"
+            allow_failure: true
+        -   allow_failure: false
     except:
         variables:
             - $SKIP_LINT
 
 .ng:test:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/chromium:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
@@ -23,6 +27,7 @@
     variables:
         REPORTERS: junit,spec,kjhtml
         BROWSERS: ChromiumHeadlessNoSandbox
+        NODE_OPTIONS: --max-old-space-size=2560
     retry:
         max: 2
         when:
@@ -30,7 +35,7 @@
     before_script:
         - npm run ci:test:before_script --if-present
     script:
-        - $(npm bin)/ng test ${PROJECT_NAME} --browsers=${BROWSERS} --reporters ${REPORTERS} --watch=false --code-coverage
+        - $(npm bin)/ng test ${PROJECT_NAME:-${CI_PROJECT_NAME}} --browsers=${BROWSERS} --reporters ${REPORTERS} --watch=false --code-coverage
     after_script:
         - npm run ci:test:after_script --if-present
     coverage: '/Statements.*?(\d+(?:\.\d+)?)%/'
@@ -42,19 +47,49 @@
         when: always
         paths:
             - coverage/
-    except:
-        variables:
-            - $SKIP_TEST
+    rules:
+        -   if: "$IGNORE_TESTS == $CI_PROJECT_NAME"
+            allow_failure: true
+        -   allow_failure: false
+
+.ng:e2e:
+    stage: Testing and building modules
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
+    before_script:
+        - npm run ci:e2e:before_script --if-present
+    script:
+        - ng e2e ${PROJECT_NAME:-${CI_PROJECT_NAME}} --configuration=${PROJECT_CONFIGURATION}
+    after_script:
+        - npm run ci:e2e:after_script --if-present
+    artifacts:
+        expire_in: 30 days
+        when: always
+        paths:
+            - coverage/
+            - dist/e2e/${PROJECT_NAME:-${CI_PROJECT_NAME}}/
+    rules:
+        -   if: "$IGNORE_E2E == $CI_PROJECT_NAME"
+            allow_failure: true
+        -   allow_failure: false
 
 .ng:build:
     stage: Testing and building modules
-    image: node:lts-alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    tags:
+      - build-front
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
             - node_modules/
         policy: pull
     dependencies: []
+    variables:
+        NODE_OPTIONS: --max-old-space-size=2560
     retry:
         max: 2
         when:
@@ -62,13 +97,13 @@
     before_script:
         - npm run ci:build:before_script --if-present
     script:
-        - $(npm bin)/ng build ${PROJECT_NAME} --prod --configuration=${PROJECT_CONFIGURATION}
+        - $(npm bin)/ng build ${PROJECT_NAME:-${CI_PROJECT_NAME}} --configuration=${PROJECT_CONFIGURATION}
     after_script:
         - npm run ci:build:after_script --if-present
     artifacts:
         expire_in: 30 days
         paths:
-            - dist/${PROJECT_NAME}/
+            - dist/${PROJECT_NAME:-${CI_PROJECT_NAME}}/
 
 .ng:lint:general:
     extends:
@@ -118,6 +153,31 @@
 .ng:test:production:
     extends:
         - .ng:test
+        - .production-environment
+
+.ng:e2e:general:
+    extends:
+        - .ng:e2e
+        - .general-environment
+
+.ng:e2e:develop:
+    extends:
+        - .ng:e2e
+        - .develop-environment
+
+.ng:e2e:test:
+    extends:
+        - .ng:e2e
+        - .test-environment
+
+.ng:e2e:stage:
+    extends:
+        - .ng:e2e
+        - .stage-environment
+
+.ng:e2e:production:
+    extends:
+        - .ng:e2e
         - .production-environment
 
 .ng:build:general:

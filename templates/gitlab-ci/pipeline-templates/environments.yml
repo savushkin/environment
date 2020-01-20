@@ -16,6 +16,9 @@
     only:
         refs:
             - develop
+    except:
+        variables:
+            - $RELEASE_BRANCH == "develop"
 
 .test-environment:
     variables:
@@ -35,49 +38,5 @@
     variables:
         PROJECT_CONFIGURATION: production
     only:
-        refs:
-            - tags
         variables:
-            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/
-
-.pages:
-    image: alpine:latest
-    stage: Publish pages
-    allow_failure: true
-    cache:
-        key: ${CI_PROJECT_NAME}-pages
-        paths:
-            - public/
-        policy: pull-push
-    variables:
-        GIT_STRATEGY: none
-    before_script:
-        - mkdir -p public
-    artifacts:
-        paths:
-            - public
-                
-.pages:general:
-    extends:
-        - .pages
-        - .general-environment
-
-.pages:develop:
-    extends:
-        - .pages
-        - .develop-environment
-
-.pages:test:
-    extends:
-        - .pages
-        - .test-environment
-
-.pages:stage:
-    extends:
-        - .pages
-        - .stage-environment
-
-.pages:production:
-    extends:
-        - .pages
-        - .production-environment
+            - $RELEASE_BRANCH == $CI_COMMIT_REF_NAME

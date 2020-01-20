@@ -1,62 +1,165 @@
-ng:lint:application:
+.skip-release-commit:
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
+
+
+Linting commit message:
+    extends:
+        - .commitlint:lint
+        - .skip-release-commit
+
+Linting angular application:
     extends:
         - .ng:lint
+        - .skip-release-commit
         - .angular-application
 
-ng:test:application:
+Unit testing angular application:
     extends:
         - .ng:test
+        - .skip-release-commit
         - .angular-application
 
-ng:build:general:application:
+E2E Testing general angular application:
+    extends:
+        - .ng:e2e:general
+        - .skip-release-commit
+        - .angular-application
+
+E2E Testing develop angular application:
+    extends:
+        - .ng:e2e:develop
+        - .skip-release-commit
+        - .angular-application
+
+E2E Testing test angular application:
+    extends:
+        - .ng:e2e:test
+        - .skip-release-commit
+        - .angular-application
+
+E2E Testing stage angular application:
+    extends:
+        - .ng:e2e:stage
+        - .skip-release-commit
+        - .angular-application
+
+E2E Testing production angular application:
+    extends:
+        - .ng:e2e:production
+        - .skip-release-commit
+        - .angular-application
+
+Building general angular application:
     extends:
         - .ng:build:general
+        - .skip-release-commit
         - .angular-application
 
-ng:build:develop:application:
+Building develop angular application:
     extends:
         - .ng:build:develop
+        - .skip-release-commit
         - .angular-application
 
-ng:build:test:application:
+Building test angular application:
     extends:
         - .ng:build:test
+        - .skip-release-commit
         - .angular-application
 
-ng:build:stage:application:
+Building stage angular application:
     extends:
         - .ng:build:stage
+        - .skip-release-commit
         - .angular-application
 
-ng:build:production:application:
+Building production angular application:
     extends:
         - .ng:build:production
+        - .skip-release-commit
         - .angular-application
 
-docker:image:build-and-publish:develop:application:
+Building and publishing develop docker image:
     dependencies:
-        - ng:build:develop:application
+        - Build Develop Angular Application
     extends:
         - .docker:image:build-and-publish:develop
+        - .skip-release-commit
         - .angular-application
+    script:
+        - |
+            IMAGE_NAME=${PROGET_REGISTRY_URL}/${IMAGE_CONTEXT}/${PROJECT_NAME}
+            IMAGE_TAG=$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+            docker build --build-arg project=$PROJECT_NAME $DOCKER_BUILD_ARGS -t $IMAGE_NAME:$IMAGE_TAG .
+            docker push $IMAGE_NAME:$IMAGE_TAG
 
-docker:image:build-and-publish:test:application:
+Building and publishing test docker image:
     dependencies:
-        - ng:build:test:application
+        - Build Test Angular Application
     extends:
         - .docker:image:build-and-publish:test
+        - .skip-release-commit
         - .angular-application
+    script:
+        - |
+            IMAGE_NAME=${PROGET_REGISTRY_URL}/${IMAGE_CONTEXT}/${PROJECT_NAME}
+            IMAGE_TAG=$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+            docker build --build-arg project=$PROJECT_NAME $DOCKER_BUILD_ARGS -t $IMAGE_NAME:$IMAGE_TAG .
+            docker push $IMAGE_NAME:$IMAGE_TAG
 
-docker:image:build-and-publish:stage:application:
+Building and publishing stage docker image:
     dependencies:
-        - ng:build:stage:application
+        - Build Stage Angular Application
     extends:
         - .docker:image:build-and-publish:stage
+        - .skip-release-commit
+        - .angular-application
+    script:
+        - |
+            IMAGE_NAME=${PROGET_REGISTRY_URL}/${IMAGE_CONTEXT}/${PROJECT_NAME}
+            IMAGE_TAG=$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+            docker build --build-arg project=$PROJECT_NAME $DOCKER_BUILD_ARGS -t $IMAGE_NAME:$IMAGE_TAG .
+            docker push $IMAGE_NAME:$IMAGE_TAG
+
+Building and publishing production docker image:
+    dependencies:
+        - Build Production Angular Application
+    extends:
+        - .semantic-release:docker:production
+        - .skip-release-commit
+        - .angular-application
+    when: manual
+
+Deploying develop application:
+    extends:
+        - .k8s:build-manifest:develop
+        - .develop-environment-defenition
+        - .skip-release-commit
         - .angular-application
 
-docker:image:build-and-publish:production:application:
-    dependencies:
-        - ng:build:production:application
+Deploying test application:
     extends:
-        - .docker:image:build-and-publish:production
+        - .k8s:build-manifest:test
+        - .test-environment-defenition
+        - .skip-release-commit
         - .angular-application
+
+Deploying stage application:
+    extends:
+        - .k8s:build-manifest:stage
+        - .stage-environment-defenition
+        - .skip-release-commit
+        - .angular-application
+
+Deploying production application:
+    extends:
+        - .k8s:build-manifest:production
+        - .production-environment-defenition
+        - .angular-application
+    only:
+        refs:
+            - tags
+        variables:
+            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/

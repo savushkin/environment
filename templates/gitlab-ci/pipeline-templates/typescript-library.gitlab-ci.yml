@@ -1,58 +1,49 @@
-typescript:build:library:
-    stage: Testing and building modules
-    image: node:lts-alpine
-    extends:
+ts:build:library:
+    extends: 
+        - .ts:build
         - .typescript-library
-    cache:
-        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
-        paths:
-            - node_modules/
-        policy: pull
-    before_script:
-        - npm version --allow-same-version ${CI_COMMIT_TAG:-"v$(node -p -e "require('./package.json').version")-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
-        - npm run ci:build:before_script --if-present
-    script:
-        - $(npm bin)/tsc -p .
-    after_script:
-        - npm run ci:build:after_script --if-present
-    artifacts:
-        expire_in: 30 days
-        paths:
-            - dist/$PROJECT_NAME
-            - README.md
-            - package.json
-            - package-lock.json
 
-npm:push-package:general:library:
+ts:push-package:general:library:
     when: manual
+    dependencies:
+        - ts:build:library
     extends:
         - .npm:push-package:general
         - .general-environment-defenition
         - .typescript-library
 
-npm:push-package:develop:library:
+ts:push-package:develop:library:
     when: manual
+    dependencies:
+        - ts:build:library
     extends:
         - .npm:push-package:develop
         - .develop-environment-defenition
         - .typescript-library
 
-npm:push-package:test:library:
+ts:push-package:test:library:
     when: manual
+    dependencies:
+        - ts:build:library
     extends:
         - .npm:push-package:test
         - .test-environment-defenition
         - .typescript-library
 
-npm:push-package:stage:library:
+ts:push-package:stage:library:
     when: manual
+    dependencies:
+        - ts:build:library
     extends:
         - .npm:push-package:stage
         - .stage-environment-defenition
         - .typescript-library
 
-npm:push-package:production:library:
+ts:push-package:production:library:
+    when: manual
+    dependencies:
+        - ts:build:library
     extends:
-        - .npm:push-package:production
+        - .semantic-release:npm:production
         - .production-environment-defenition
         - .typescript-library

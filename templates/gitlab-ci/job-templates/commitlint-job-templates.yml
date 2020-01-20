@@ -1,13 +1,8 @@
 .commitlint:lint:
     stage: Testing and building modules
-    image: node:lts-alpine
-    cache:
-        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
-        paths:
-            - node_modules/
-        policy: pull
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     script:
-        - echo "$CI_COMMIT_MESSAGE" | $(npm bin)/commitlint
+        - echo "$CI_COMMIT_MESSAGE" | commitlint
 
 .commitlint:lint:general:
     extends:

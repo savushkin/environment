@@ -1,0 +1,86 @@
+.semantic-release:npm:
+    stage: Build and publish artifacts
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    variables:
+        GIT_STRATEGY: clone
+    cache: {}
+    script:
+        - |
+            GITLAB_URL="https://${CI_SERVER_HOST}" \
+            GIT_AUTHOR_NAME="${GITLAB_USER_NAME}" \
+            GIT_AUTHOR_EMAIL="${GITLAB_USER_EMAIL}" \
+            GIT_COMMITTER_NAME="Mishka Assistant" \
+            GIT_COMMITTER_EMAIL="assistant@savushkin.me" \
+            NPM_CONFIG_REGISTRY="https://${NPM_REGISTRY_URL}" \
+            NPM_TOKEN="${NPM_REGISTRY_TOKEN}" \
+            semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+
+.semantic-release:npm:general:
+    extends:
+        - .semantic-release:npm
+        - .general-environment
+
+.semantic-release:npm:develop:
+    extends:
+        - .semantic-release:npm
+        - .develop-environment
+
+.semantic-release:npm:test:
+    extends:
+        - .semantic-release:npm
+        - .test-environment
+
+.semantic-release:npm:stage:
+    extends:
+        - .semantic-release:npm
+        - .stage-environment
+
+.semantic-release:npm:production:
+    extends:
+        - .semantic-release:npm
+        - .production-environment
+
+.semantic-release:docker:
+    stage: Build and publish artifacts
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    variables:
+        GIT_STRATEGY: clone
+    services:
+        - docker:dind
+    cache: {}
+    dependencies: []
+    script:
+        - |
+            DOCKER_USERNAME="${DOCKER_REGISTRY_USERNAME:-${CI_REGISTRY_USER}}" \
+            DOCKER_PASSWORD="${DOCKER_REGISTRY_PASSWORD:-${CI_REGISTRY_PASSWORD}}" \
+            GITLAB_URL="https://${CI_SERVER_HOST}" \
+            GIT_AUTHOR_NAME="${GITLAB_USER_NAME}" \
+            GIT_AUTHOR_EMAIL="${GITLAB_USER_EMAIL}" \
+            GIT_COMMITTER_NAME="Mishka Assistant" \
+            GIT_COMMITTER_EMAIL="assistant@savushkin.me" \
+            semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+
+.semantic-release:docker:general:
+    extends:
+        - .semantic-release:docker
+        - .general-environment
+
+.semantic-release:docker:develop:
+    extends:
+        - .semantic-release:docker
+        - .develop-environment
+
+.semantic-release:docker:test:
+    extends:
+        - .semantic-release:docker
+        - .test-environment
+
+.semantic-release:docker:stage:
+    extends:
+        - .semantic-release:docker
+        - .stage-environment
+
+.semantic-release:docker:production:
+    extends:
+        - .semantic-release:docker
+        - .production-environment

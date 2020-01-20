@@ -1,0 +1,35 @@
+.k8s:build-manifest:
+    stage: Deploy artifacts
+    cache: {}
+    dependencies: []
+    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    script:
+        - kubectl get namespaces
+
+.k8s:build-manifest:general:
+    extends:
+        - .k8s:build-manifest
+        - .general-environment
+
+.k8s:build-manifest:develop:
+    extends:
+        - .k8s:build-manifest
+        - .develop-environment
+
+.k8s:build-manifest:test:
+    when: manual
+    extends:
+        - .k8s:build-manifest
+        - .test-environment
+
+.k8s:build-manifest:stage:
+    when: manual
+    extends:
+        - .k8s:build-manifest
+        - .stage-environment
+
+.k8s:build-manifest:production:
+    when: manual
+    extends:
+        - .k8s:build-manifest
+        - .production-environment
