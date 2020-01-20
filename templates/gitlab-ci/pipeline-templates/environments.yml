@@ -8,7 +8,6 @@
             - master
             - tags
         variables:
-            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .develop-environment:

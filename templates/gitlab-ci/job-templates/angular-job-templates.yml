@@ -157,26 +157,46 @@
     extends:
         - .ng:e2e
         - .general-environment
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:e2e:develop:
     extends:
         - .ng:e2e
         - .develop-environment
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:e2e:test:
     extends:
         - .ng:e2e
         - .test-environment
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:e2e:stage:
     extends:
         - .ng:e2e
         - .stage-environment
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:e2e:production:
     extends:
         - .ng:e2e
         - .production-environment
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:build:general:
     extends:
