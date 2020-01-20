@@ -8,7 +8,10 @@
         policy: pull
     script:
         - $(npm bin)/ng lint ${PROJECT_NAME:-${CI_PROJECT_NAME}}
-    allow_failure: ${IGNORE_LINT:-false}
+    except:
+        variables:
+            - $IGNORE_LINT
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:test:
     stage: Testing and building modules
@@ -41,7 +44,10 @@
         when: always
         paths:
             - coverage/
-    allow_failure: ${IGNORE_TESTS:-false}
+    except:
+        variables:
+            - $IGNORE_TESTS
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:e2e:
     stage: Testing and building modules
@@ -63,7 +69,10 @@
         paths:
             - coverage/
             - dist/e2e/${PROJECT_NAME:-${CI_PROJECT_NAME}}/
-    allow_failure: ${IGNORE_E2E:-false}
+    except:
+        variables:
+            - $IGNORE_E2E
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:build:
     stage: Testing and building modules
@@ -92,6 +101,9 @@
         expire_in: 30 days
         paths:
             - dist/${PROJECT_NAME:-${CI_PROJECT_NAME}}/
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .ng:lint:general:
     extends:

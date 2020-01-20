@@ -3,17 +3,19 @@
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     variables:
         GIT_STRATEGY: clone
+        GITLAB_URL: https://${CI_SERVER_HOST}
+        GIT_AUTHOR_NAME: ${GITLAB_USER_NAME}
+        GIT_AUTHOR_EMAIL: ${GITLAB_USER_EMAIL}
+        GIT_COMMITTER_NAME: Mishka Assistant
+        GIT_COMMITTER_EMAIL: assistant@savushkin.me
+        NPM_CONFIG_REGISTRY: https://${NPM_REGISTRY_URL}
+        NPM_TOKEN: ${NPM_REGISTRY_TOKEN}
     cache: {}
     script:
-        - |
-            GITLAB_URL="https://${CI_SERVER_HOST}" \
-            GIT_AUTHOR_NAME="${GITLAB_USER_NAME}" \
-            GIT_AUTHOR_EMAIL="${GITLAB_USER_EMAIL}" \
-            GIT_COMMITTER_NAME="Mishka Assistant" \
-            GIT_COMMITTER_EMAIL="assistant@savushkin.me" \
-            NPM_CONFIG_REGISTRY="https://${NPM_REGISTRY_URL}" \
-            NPM_TOKEN="${NPM_REGISTRY_TOKEN}" \
-            semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+        - semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .semantic-release:npm:general:
     extends:
@@ -45,20 +47,22 @@
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     variables:
         GIT_STRATEGY: clone
+        DOCKER_USERNAME: ${DOCKER_REGISTRY_USERNAME:-${CI_REGISTRY_USER}}"
+        DOCKER_PASSWORD: ${DOCKER_REGISTRY_PASSWORD:-${CI_REGISTRY_PASSWORD}}"
+        GITLAB_URL: https://${CI_SERVER_HOST}
+        GIT_AUTHOR_NAME: ${GITLAB_USER_NAME}
+        GIT_AUTHOR_EMAIL: ${GITLAB_USER_EMAIL}
+        GIT_COMMITTER_NAME: Mishka Assistant
+        GIT_COMMITTER_EMAIL: assistant@savushkin.me
     services:
         - docker:dind
     cache: {}
     dependencies: []
     script:
-        - |
-            DOCKER_USERNAME="${DOCKER_REGISTRY_USERNAME:-${CI_REGISTRY_USER}}" \
-            DOCKER_PASSWORD="${DOCKER_REGISTRY_PASSWORD:-${CI_REGISTRY_PASSWORD}}" \
-            GITLAB_URL="https://${CI_SERVER_HOST}" \
-            GIT_AUTHOR_NAME="${GITLAB_USER_NAME}" \
-            GIT_AUTHOR_EMAIL="${GITLAB_USER_EMAIL}" \
-            GIT_COMMITTER_NAME="Mishka Assistant" \
-            GIT_COMMITTER_EMAIL="assistant@savushkin.me" \
-            semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+        - semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH:-master}"
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .semantic-release:docker:general:
     extends:

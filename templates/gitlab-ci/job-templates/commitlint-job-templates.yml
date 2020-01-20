@@ -3,6 +3,9 @@
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     script:
         - echo "$CI_COMMIT_MESSAGE" | commitlint
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .commitlint:lint:general:
     extends:

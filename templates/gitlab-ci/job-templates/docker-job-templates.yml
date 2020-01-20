@@ -16,6 +16,9 @@
             docker build $DOCKER_BUILD_ARGS -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
             docker push $IMAGE:$TAG
             docker push $IMAGE:$TAG_LATEST
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
 .docker:image:build-and-publish:general:
     extends:
