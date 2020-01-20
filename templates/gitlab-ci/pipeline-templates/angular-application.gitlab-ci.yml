@@ -2,24 +2,31 @@ include:
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/pipeline-templates/stages.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/pipeline-templates/environments.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/npm-job-templates.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/commitlint-job-templates.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/angular-job-templates.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/docker-job-templates.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/semantic-release-job-templates.yml
+
     - project: savushkin.i/environment
       ref: master
       file: templates/gitlab-ci/job-templates/k8s-job-templates.yml
@@ -90,28 +97,28 @@ Building production angular application:
 
 Building and publishing develop docker image:
     dependencies:
-        - Build Develop Angular Application
+        - Building Develop Angular Application
     extends:
         - .docker:image:build-and-publish:develop
         - .angular-application
 
 Building and publishing test docker image:
     dependencies:
-        - Build Test Angular Application
+        - Building Test Angular Application
     extends:
         - .docker:image:build-and-publish:test
         - .angular-application
 
 Building and publishing stage docker image:
     dependencies:
-        - Build Stage Angular Application
+        - Building Stage Angular Application
     extends:
         - .docker:image:build-and-publish:stage
         - .angular-application
 
 Building and publishing production docker image:
     dependencies:
-        - Build Production Angular Application
+        - Building Production Angular Application
     extends:
         - .semantic-release:docker:production
         - .angular-application
