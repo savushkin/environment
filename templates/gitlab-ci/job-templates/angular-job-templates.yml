@@ -12,9 +12,6 @@
         -   if: "$IGNORE_LINT == $CI_PROJECT_NAME"
             allow_failure: true
         -   allow_failure: false
-    except:
-        variables:
-            - $SKIP_LINT
 
 .ng:test:
     stage: Testing and building modules
