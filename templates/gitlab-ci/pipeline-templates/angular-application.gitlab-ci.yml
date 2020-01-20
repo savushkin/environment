@@ -3,7 +3,6 @@
         variables:
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
 
-
 Linting commit message:
     extends:
         - .commitlint:lint

@@ -8,10 +8,7 @@
         policy: pull
     script:
         - $(npm bin)/ng lint ${PROJECT_NAME:-${CI_PROJECT_NAME}}
-    rules:
-        -   if: "$IGNORE_LINT == $CI_PROJECT_NAME"
-            allow_failure: true
-        -   allow_failure: false
+    allow_failure: ${IGNORE_LINT:-false}
 
 .ng:test:
     stage: Testing and building modules
@@ -44,10 +41,7 @@
         when: always
         paths:
             - coverage/
-    rules:
-        -   if: "$IGNORE_TESTS == $CI_PROJECT_NAME"
-            allow_failure: true
-        -   allow_failure: false
+    allow_failure: ${IGNORE_TESTS:-false}
 
 .ng:e2e:
     stage: Testing and building modules
@@ -69,10 +63,7 @@
         paths:
             - coverage/
             - dist/e2e/${PROJECT_NAME:-${CI_PROJECT_NAME}}/
-    rules:
-        -   if: "$IGNORE_E2E == $CI_PROJECT_NAME"
-            allow_failure: true
-        -   allow_failure: false
+    allow_failure: ${IGNORE_E2E:-false}
 
 .ng:build:
     stage: Testing and building modules
