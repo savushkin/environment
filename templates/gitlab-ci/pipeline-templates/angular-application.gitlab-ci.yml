@@ -97,28 +97,28 @@ Building production angular application:
 
 Building and publishing develop docker image:
     dependencies:
-        - Building Develop Angular Application
+        - Building develop angular application
     extends:
         - .docker:image:build-and-publish:develop
         - .angular-application
 
 Building and publishing test docker image:
     dependencies:
-        - Building Test Angular Application
+        - Building test angular application
     extends:
         - .docker:image:build-and-publish:test
         - .angular-application
 
 Building and publishing stage docker image:
     dependencies:
-        - Building Stage Angular Application
+        - Building stage angular application
     extends:
         - .docker:image:build-and-publish:stage
         - .angular-application
 
 Building and publishing production docker image:
     dependencies:
-        - Building Production Angular Application
+        - Building production angular application
     extends:
         - .semantic-release:docker:production
         - .angular-application
