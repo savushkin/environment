@@ -1,0 +1,12 @@
+re2@1.10.5
+renovate@19.81.0
+commitlint@8.2.0
+@commitlint/config-conventional@8.2.0
+conventional-changelog-conventionalcommits@4.2.3
+semantic-release@15.13.31
+@semantic-release/changelog@3.0.6
+@semantic-release/git@7.0.18
+@semantic-release/gitlab@4.0.4
+@semantic-release/exec@3.3.8
+semantic-release-docker@2.2.0
+maven-semantic-release@4.6.2
