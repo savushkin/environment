@@ -20,7 +20,6 @@
     except:
         variables:
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
-            - $RELEASE_BRANCH == "develop"
 
 .test-environment:
     variables:
