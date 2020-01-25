@@ -1,4 +1,4 @@
-npm:dependency:install:
+Dependency installation:
     stage: Building dependency
     image: node:lts-alpine
     cache:
