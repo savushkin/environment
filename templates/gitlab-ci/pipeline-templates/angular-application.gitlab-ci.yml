@@ -45,104 +45,104 @@ Unit testing angular application:
         - .ng:test
         - .angular-application
 
-E2E Testing general angular application:
+General E2E Testing angular application:
     extends:
         - .ng:e2e:general
         - .angular-application
 
-E2E Testing develop angular application:
+Development E2E Testing angular application:
     extends:
         - .ng:e2e:develop
         - .angular-application
 
-E2E Testing test angular application:
+Test E2E Testing angular application:
     extends:
         - .ng:e2e:test
         - .angular-application
 
-E2E Testing stage angular application:
+Stage E2E Testing angular application:
     extends:
         - .ng:e2e:stage
         - .angular-application
 
-E2E Testing production angular application:
+Production E2E Testing angular application:
     extends:
         - .ng:e2e:production
         - .angular-application
 
-Building general angular application:
+General Building angular application:
     extends:
         - .ng:build:general
         - .angular-application
 
-Building develop angular application:
+Development Building angular application:
     extends:
         - .ng:build:develop
         - .angular-application
 
-Building test angular application:
+Test Building angular application:
     extends:
         - .ng:build:test
         - .angular-application
 
-Building stage angular application:
+Stage Building angular application:
     extends:
         - .ng:build:stage
         - .angular-application
 
-Building production angular application:
+Production Building angular application:
     extends:
         - .ng:build:production
         - .angular-application
 
-Building and publishing develop docker image:
+Development Building and publishing docker image:
     dependencies:
-        - Building develop angular application
+        - Development Building angular application
     extends:
         - .docker:image:build-and-publish:develop
         - .angular-application
 
-Building and publishing test docker image:
+Test Building and publishing docker image:
     dependencies:
-        - Building test angular application
+        - Test Building angular application
     extends:
         - .docker:image:build-and-publish:test
         - .angular-application
 
-Building and publishing stage docker image:
+Stage Building and publishing docker image:
     dependencies:
-        - Building stage angular application
+        - Stage Building angular application
     extends:
         - .docker:image:build-and-publish:stage
         - .angular-application
 
-Building and publishing production docker image:
+Production Building and publishing docker image:
     dependencies:
-        - Building production angular application
+        - Production Building angular application
     extends:
         - .semantic-release:docker:production
         - .angular-application
     when: manual
 
-Deploying develop application:
+Development Deploying application:
     extends:
         - .k8s:build-manifest:develop
         - .develop-environment-defenition
         - .angular-application
 
-Deploying test application:
+Test Deploying application:
     extends:
         - .k8s:build-manifest:test
         - .test-environment-defenition
         - .angular-application
 
-Deploying stage application:
+Stage Deploying application:
     extends:
         - .k8s:build-manifest:stage
         - .stage-environment-defenition
         - .angular-application
 
-Deploying production application:
+Production Deploying application:
     extends:
         - .k8s:build-manifest:production
         - .production-environment-defenition

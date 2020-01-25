@@ -3,19 +3,19 @@
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     services:
         - docker:dind
+    variables:
+        IMAGE: ${IMAGE_NAME:-$CI_REGISTRY_IMAGE}
+        TAG: ${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
+        TAG_LATEST: ${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}"}-latest
     before_script:
         - docker login -u ${DOCKER_REGISTRY_USERNAME:-${CI_REGISTRY_USER}} -p ${DOCKER_REGISTRY_PASSWORD:-${CI_REGISTRY_PASSWORD}} ${DOCKER_REGISTRY_URL:-${CI_REGISTRY}}
         - cd ${BUILD_CONTEXT:-.}
+    script:
+        - docker build $DOCKER_BUILD_ARGS -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
+        - docker push $IMAGE:$TAG
+        - docker push $IMAGE:$TAG_LATEST
     after_script:
         - docker logout ${DOCKER_REGISTRY_URL:-${CI_REGISTRY}}
-    script:
-        - |
-            IMAGE=${IMAGE_NAME:-$CI_REGISTRY_IMAGE}
-            TAG=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}"}
-            TAG_LATEST=${IMAGE_TAG:-"${CI_COMMIT_REF_SLUG}"}-latest
-            docker build $DOCKER_BUILD_ARGS -t $IMAGE:$TAG -t $IMAGE:$TAG_LATEST .
-            docker push $IMAGE:$TAG
-            docker push $IMAGE:$TAG_LATEST
     except:
         variables:
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
