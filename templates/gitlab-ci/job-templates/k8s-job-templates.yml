@@ -4,7 +4,7 @@
     dependencies: []
     image: registry.gitlab.com/savushkin.i/environment/builder:alpine
     script:
-        - kubectl get namespaces
+        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | kubectl apply -f -
 
 .k8s:build-manifest:general:
     extends:
