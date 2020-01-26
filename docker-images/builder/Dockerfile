@@ -14,6 +14,7 @@ RUN apk update \
 && cat /tmp/packages/apk.list | xargs apk add --no-cache \
 && /tmp/scripts/ssh.sh \
 && /tmp/scripts/kubectl.sh \
+&& /tmp/scripts/kustomize.sh \
 && npm config set unsafe-perm true \
 && cat /tmp/packages/npm.list | xargs npm install -g \
 && rm -rf /var/lib/apt/lists/* /var/cache/apk/* /usr/share/man /tmp/*
