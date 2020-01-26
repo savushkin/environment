@@ -1,9 +1,10 @@
 docker:image:build-and-publish:stage:builder:
     extends: .docker:image:build-and-publish:stage
     variables:
-        BUILD_CONTEXT: docker-images/builder
-        IMAGE_NAME: $CI_REGISTRY_IMAGE/builder
-        IMAGE_TAG: alpine
+        DOCKER_BUILD_PATH: docker-images/builder
+        DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE/builder
+        DOCKER_IMAGE_TAG: alpine-${CI_COMMIT_SHORT_SHA}
+        DOCKER_IMAGE_TAG_LATEST: latest
     only:
         changes:
             - docker-images/builder/**/*
