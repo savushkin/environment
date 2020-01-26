@@ -12,3 +12,4 @@ make
 python
 nss
 chromium
+re2
