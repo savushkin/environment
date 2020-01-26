@@ -1,6 +1,6 @@
 .docker:image:build-and-publish:
     stage: Build and publish artifacts
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     services:
         - docker:dind
     variables:

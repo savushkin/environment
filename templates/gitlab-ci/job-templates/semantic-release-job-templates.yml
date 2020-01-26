@@ -1,6 +1,6 @@
 .semantic-release:npm:
     stage: Build and publish artifacts
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     variables:
         GIT_STRATEGY: clone
         GITLAB_URL: https://${CI_SERVER_HOST}
@@ -44,7 +44,7 @@
 
 .semantic-release:docker:
     stage: Build and publish artifacts
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     variables:
         GIT_STRATEGY: clone
         GIT_AUTHOR_NAME: ${GITLAB_USER_NAME}

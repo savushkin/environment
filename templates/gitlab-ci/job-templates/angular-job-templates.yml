@@ -1,6 +1,6 @@
 .ng:lint:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
@@ -15,7 +15,7 @@
 
 .ng:test:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
@@ -51,7 +51,7 @@
 
 .ng:e2e:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
@@ -76,7 +76,7 @@
 
 .ng:build:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:

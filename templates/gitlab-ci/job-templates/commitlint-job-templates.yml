@@ -1,6 +1,6 @@
 .commitlint:lint:
     stage: Testing and building modules
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     script:
         - echo "$CI_COMMIT_MESSAGE" | commitlint
     except:

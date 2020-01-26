@@ -2,7 +2,7 @@
     stage: Deploy artifacts
     cache: {}
     dependencies: []
-    image: registry.gitlab.com/savushkin.i/environment/builder:alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     script:
         - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | kubectl apply -f -
 
