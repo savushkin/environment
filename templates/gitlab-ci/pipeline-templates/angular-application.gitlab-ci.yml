@@ -98,6 +98,8 @@ Production Building angular application:
 Development Building and publishing docker image:
     dependencies:
         - Development Building angular application
+    variables:
+        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
     extends:
         - .docker:image:build-and-publish:develop
         - .angular-application
@@ -105,6 +107,8 @@ Development Building and publishing docker image:
 Test Building and publishing docker image:
     dependencies:
         - Test Building angular application
+    variables:
+        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
     extends:
         - .docker:image:build-and-publish:test
         - .angular-application
@@ -112,6 +116,8 @@ Test Building and publishing docker image:
 Stage Building and publishing docker image:
     dependencies:
         - Stage Building angular application
+    variables:
+        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
     extends:
         - .docker:image:build-and-publish:stage
         - .angular-application
@@ -122,6 +128,8 @@ Production Building and publishing docker image:
     extends:
         - .semantic-release:docker:production
         - .angular-application
+    variables:
+        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
     when: manual
 
 Development Deploying application:
