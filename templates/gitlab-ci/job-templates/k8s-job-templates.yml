@@ -11,7 +11,7 @@
         - kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
         - cd "${CI_PROJECT_DIR}/"
     script:
-        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | tee | kubectl apply -f -
+        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | kubectl apply -f -
 
 .k8s:build-manifest:general:
     extends:
