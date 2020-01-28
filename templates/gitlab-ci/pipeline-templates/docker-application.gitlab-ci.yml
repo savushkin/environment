@@ -67,9 +67,6 @@ Stage Deploying application:
         - .docker-application
 
 Production Deploying application:
-    variables:
-        DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}
-        DOCKER_IMAGE_TAG: ${CI_COMMIT_TAG#"v"}
     extends:
         - .k8s:build-manifest:production
         - .production-environment-defenition
