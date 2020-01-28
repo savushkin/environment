@@ -58,8 +58,6 @@
         DOCKER_BUILD_PATH: .
         DOCKER_BUILD_ARGS: ""
         DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE
-        DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
-        DOCKER_IMAGE_TAG_LATEST: ${CI_COMMIT_REF_SLUG}-latest
     services:
         - docker:dind
     cache: {}

@@ -2,9 +2,16 @@
     stage: Deploy artifacts
     cache: {}
     dependencies: []
+    variables:
+        DOCKER_IMAGE_NAME: ${CI_REGISTRY_IMAGE}
+        DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
     image: registry.gitlab.com/savushkin.i/environment/builder:latest
+    before_script:
+        - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
+        - kustomize edit set image ${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}
+        - cd "${CI_PROJECT_DIR}/"
     script:
-        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | kubectl apply -f -
+        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | tee | kubectl apply -f -
 
 .k8s:build-manifest:general:
     extends:
