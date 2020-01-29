@@ -1,0 +1,121 @@
+include:
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/pipeline-templates/stages.yml
+
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/pipeline-templates/environments.yml
+
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/job-templates/commitlint-job-templates.yml
+
+    -   project: savushkin.i/environment
+        ref: master
+        file: templates/gitlab-ci/job-templates/maven-job-templates.yml
+
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/job-templates/docker-job-templates.yml
+
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/job-templates/semantic-release-job-templates.yml
+
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/job-templates/k8s-job-templates.yml
+
+#General Building java application:
+#    extends:
+#        - .java:build:general
+#        - .java-application
+#
+#Development Building java application:
+#    extends:
+#        - .java:build:develop
+#        - .java-application
+#
+#Test Building java application:
+#    extends:
+#        - .java:build:test
+#        - .java-application
+#
+#Stage Building java application:
+#    extends:
+#        - .java:build:stage
+#        - .java-application
+#
+#Production Building java application:
+#    extends:
+#        - .java:build:production
+#        - .java-application
+#
+#Development Building and publishing docker image:
+#    dependencies:
+#        - Development Building java application
+#    variables:
+#        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
+#    extends:
+#        - .docker:image:build-and-publish:develop
+#        - .java-application
+#
+#Test Building and publishing docker image:
+#    dependencies:
+#        - Test Building java application
+#    variables:
+#        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
+#    extends:
+#        - .docker:image:build-and-publish:test
+#        - .java-application
+#
+#Stage Building and publishing docker image:
+#    dependencies:
+#        - Stage Building java application
+#    variables:
+#        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
+#    extends:
+#        - .docker:image:build-and-publish:stage
+#        - .java-application
+#
+#Production Building and publishing docker image:
+#    dependencies:
+#        - Production Building java application
+#    extends:
+#        - .semantic-release:docker:production
+#        - .java-application
+#    variables:
+#        DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}
+#    when: manual
+#
+#Development Deploying application:
+#    extends:
+#        - .k8s:build-manifest:develop
+#        - .develop-environment-defenition
+#        - .java-application
+#
+#Test Deploying application:
+#    extends:
+#        - .k8s:build-manifest:test
+#        - .test-environment-defenition
+#        - .java-application
+#
+#Stage Deploying application:
+#    extends:
+#        - .k8s:build-manifest:stage
+#        - .stage-environment-defenition
+#        - .java-application
+#
+#Production Deploying application:
+#    extends:
+#        - .k8s:build-manifest:production
+#        - .production-environment-defenition
+#        - .java-application
+#    only:
+#        refs:
+#            - tags
+#        variables:
+#            - $CI_COMMIT_TAG =~ /^v\d+.\d+.\d+$/
+#    except:
+#        variables: []

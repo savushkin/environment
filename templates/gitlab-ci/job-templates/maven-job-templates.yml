@@ -1,0 +1,19 @@
+variables:
+    MAVEN_OPTS: "-Dhttps.protocols=TLSv1.2 -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=WARN -Dorg.slf4j.simpleLogger.showDateTime=true -Djava.awt.headless=true"
+
+Dependency installation:
+    stage: Building dependency
+    image: maven:3.6.3-jdk-8
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-maven-dependency
+        paths:
+            - .m2/repository
+        policy: push
+    script:
+        - mvn dependency:go-offline
+    only:
+        changes:
+            - pom.xml
+    except:
+        variables:
+            - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
