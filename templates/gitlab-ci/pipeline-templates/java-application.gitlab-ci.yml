@@ -11,9 +11,9 @@ include:
       ref: master
       file: templates/gitlab-ci/job-templates/commitlint-job-templates.yml
 
-    -   project: savushkin.i/environment
-        ref: master
-        file: templates/gitlab-ci/job-templates/maven-job-templates.yml
+    - project: savushkin.i/environment
+      ref: master
+      file: templates/gitlab-ci/job-templates/maven-job-templates.yml
 
     - project: savushkin.i/environment
       ref: master
