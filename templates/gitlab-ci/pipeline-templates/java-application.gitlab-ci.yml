@@ -56,7 +56,7 @@ Development Building and publishing docker image:
     dependencies:
         - Development Building java application
     variables:
-        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${PROJECT_NAME:-${CI_PROJECT_NAME}}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
+        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
     extends:
         - .docker:image:build-and-publish:develop
         - .java-application
@@ -65,7 +65,7 @@ Test Building and publishing docker image:
     dependencies:
         - Test Building java application
     variables:
-        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${PROJECT_NAME:-${CI_PROJECT_NAME}}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
+        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
     extends:
         - .docker:image:build-and-publish:test
         - .java-application
@@ -74,7 +74,7 @@ Stage Building and publishing docker image:
     dependencies:
         - Stage Building java application
     variables:
-        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${PROJECT_NAME:-${CI_PROJECT_NAME}}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
+        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
     extends:
         - .docker:image:build-and-publish:stage
         - .java-application
@@ -86,7 +86,7 @@ Production Building and publishing docker image:
         - .semantic-release:docker:production
         - .java-application
     variables:
-        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${PROJECT_NAME:-${CI_PROJECT_NAME}}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
+        DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
     when: manual
 
 Development Deploying application:
