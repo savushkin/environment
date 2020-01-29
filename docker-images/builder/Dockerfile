@@ -4,7 +4,7 @@ LABEL maintainer="Ivan Savushkin <ivan@savushkin.me>"
 
 ENV KUSTOMIZE_VER 3.5.4
 ENV KUBECTL_VER 1.17.2
-ENV MAVENL_VER 3.6.3
+ENV MAVEN_VER 3.6.3
 
 ENV MAVEN_HOME /usr/share/maven
 ENV MAVEN_CONFIG "/root/.m2"
