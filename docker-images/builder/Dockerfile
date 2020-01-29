@@ -4,10 +4,6 @@ LABEL maintainer="Ivan Savushkin <ivan@savushkin.me>"
 
 ENV KUSTOMIZE_VER 3.5.4
 ENV KUBECTL_VER 1.17.2
-ENV MAVEN_VER 3.6.3
-
-ENV MAVEN_HOME /usr/share/maven
-ENV MAVEN_CONFIG "/root/.m2"
 
 ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
@@ -22,7 +18,6 @@ RUN apk update \
 && /tmp/scripts/ssh.sh \
 && /tmp/scripts/kubectl.sh \
 && /tmp/scripts/kustomize.sh \
-&& /tmp/scripts/maven.sh \
 && npm config set unsafe-perm true \
 && cat /tmp/packages/npm.list | xargs npm install -g \
 && rm -rf /var/lib/apt/lists/* /var/cache/apk/* /usr/share/man /tmp/*
