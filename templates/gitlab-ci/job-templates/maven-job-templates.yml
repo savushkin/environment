@@ -17,3 +17,45 @@ Dependency installation:
     except:
         variables:
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
+
+.java:build:
+    stage: Testing and building modules
+    image: maven:3.6.3-jdk-8
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-maven-dependency
+        paths:
+            - .m2/repository
+        policy: pull
+    before_script:
+        - mvn versions:set -DnewVersion=${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+    script:
+        - mvn package
+    artifacts:
+        expire_in: 30 days
+        paths:
+            - target/${PROJECT_NAME:-${CI_PROJECT_NAME}}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
+
+.java:build:general:
+    extends:
+        - .java:build
+        - .general-environment
+
+.java:build:develop:
+    extends:
+        - .java:build
+        - .develop-environment
+
+.java:build:test:
+    extends:
+        - .java:build
+        - .test-environment
+
+.java:build:stage:
+    extends:
+        - .java:build
+        - .stage-environment
+
+.java:build:production:
+    extends:
+        - .java:build
+        - .production-environment
