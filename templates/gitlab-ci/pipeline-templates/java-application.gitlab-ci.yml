@@ -90,24 +90,48 @@ Production Building and publishing docker image:
     when: manual
 
 Development Deploying application:
+    before_script:
+        - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
+        - cat "${DEVELOPMENT_PROPERTIES}" >> ./application-development.properties
+        - kustomize edit add configmap ${CI_PROJECT_NAME}-profile-configmap --from-file application-development.properties
+        - kustomize edit set image ${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+        - cd "${CI_PROJECT_DIR}/"
     extends:
         - .k8s:build-manifest:develop
         - .develop-environment-defenition
         - .java-application
 
 Test Deploying application:
+    before_script:
+        - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
+        - cat "${TEST_PROPERTIES}" >> ./application-test.properties
+        - kustomize edit add configmap ${CI_PROJECT_NAME}-profile-configmap --from-file application-test.properties
+        - kustomize edit set image ${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+        - cd "${CI_PROJECT_DIR}/"
     extends:
         - .k8s:build-manifest:test
         - .test-environment-defenition
         - .java-application
 
 Stage Deploying application:
+    before_script:
+        - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
+        - cat "${STAGE_PROPERTIES}" >> ./application-stage.properties
+        - kustomize edit add configmap ${CI_PROJECT_NAME}-profile-configmap --from-file application-stage.properties
+        - kustomize edit set image ${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+        - cd "${CI_PROJECT_DIR}/"
     extends:
         - .k8s:build-manifest:stage
         - .stage-environment-defenition
         - .java-application
 
 Production Deploying application:
+    before_script:
+        - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
+        - cat "${PRODUCTION_PROPERTIES}" >> ./application-production.properties
+        - kustomize edit add configmap ${CI_PROJECT_NAME}-profile-configmap --from-file application-production.properties
+        - kustomize edit set image "${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#"v"}"
+        - cd "${CI_PROJECT_DIR}/"
     extends:
         - .k8s:build-manifest:production
         - .production-environment-defenition
