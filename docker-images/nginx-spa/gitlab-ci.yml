@@ -1,0 +1,9 @@
+docker:image:build-and-publish:stage:nginx:
+    extends: .docker:image:build-and-publish:stage
+    variables:
+        BUILD_CONTEXT: docker-images/nginx-spa
+        IMAGE_NAME: $CI_REGISTRY_IMAGE/nginx-spa
+        IMAGE_TAG: alpine
+    only:
+        changes:
+            - docker-images/nginx-spa/**/*
