@@ -7,7 +7,7 @@ include:
 
     - local: /docker-images/builder/gitlab-ci.yml
     - local: /docker-images/latex/gitlab-ci.yml
-    - local: /docker-images/nginx/gitlab-ci.yml
+    - local: /docker-images/nginx-spa/gitlab-ci.yml
 
 Linting commit message:
     extends:
