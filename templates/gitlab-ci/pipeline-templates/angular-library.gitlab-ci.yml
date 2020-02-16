@@ -8,7 +8,7 @@ ng:test:library:
         - .ng:test
         - .angular-library
     before_script:
-        - $(npm bin)/ng build ${PROJECT_NAME:-${CI_PROJECT_NAME}} --configuration=prod
+        - make -f /opt/makefiles/Makefile.angular build
         - npm run ci:test:before_script --if-present
 
 ng:build:library:
