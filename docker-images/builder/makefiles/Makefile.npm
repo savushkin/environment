@@ -1,0 +1,9 @@
+PROJECT_NAME?=${CI_PROJECT_NAME}
+
+all: ci
+
+ci:
+	npm ci
+	$(if $(shell test -f "$(npm bin)/ngcc" && echo "existing"),$$(npm bin)/ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points)
+
+.PHONY: ci

@@ -7,8 +7,7 @@ Dependency installation:
             - node_modules/
         policy: push
     script:
-        - npm ci
-        - test -f "$(npm bin)/ngcc" && $(npm bin)/ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points
+        - make -f /opt/makefiles/Makefile.npm ci
     only:
         changes:
             - package*.json
