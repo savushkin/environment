@@ -4,7 +4,7 @@ all: ci
 
 ci:
 	npm ci
-	$(MAKE) ngcc
+	$(MAKE) -f /opt/makefiles/Makefile.npm ngcc
 
 ngcc:
 ifeq ($(shell test -e $(shell npm bin)/ngcc && echo -n yes),yes)
