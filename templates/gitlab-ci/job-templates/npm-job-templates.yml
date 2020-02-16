@@ -1,6 +1,6 @@
 Dependency installation:
     stage: Building dependency
-    image: node:lts-alpine
+    image: registry.gitlab.com/savushkin.i/environment/builder:latest
     cache:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
