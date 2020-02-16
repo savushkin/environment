@@ -4,6 +4,8 @@ all: ci
 
 ci:
 	npm ci
-	$(if $(shell test -f "$(npm bin)/ngcc" && echo "existing"),$$(npm bin)/ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points)
+ifeq ($(shell test -e $(shell npm bin)/ngcc && echo -n yes),yes)
+	$$(npm bin)/ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points
+endif
 
 .PHONY: ci
