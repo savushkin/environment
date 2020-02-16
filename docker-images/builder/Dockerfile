@@ -8,10 +8,11 @@ ENV KUBECTL_VER 1.17.2
 ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
 
-RUN mkdir -p /tmp/scripts/
+RUN mkdir -p /tmp/scripts/ /opt/makefiles/
 
 COPY scripts/*.sh /tmp/scripts/
 COPY packages/*.list /tmp/packages/
+COPY makefiles/Makefile.* /opt/makefiles/
 
 RUN apk update \
 && cat /tmp/packages/apk.list | xargs apk add --no-cache \

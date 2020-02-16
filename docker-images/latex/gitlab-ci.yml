@@ -1,9 +1,10 @@
 docker:image:build-and-publish:stage:latex:
     extends: .docker:image:build-and-publish:stage
     variables:
-        BUILD_CONTEXT: docker-images/latex
-        IMAGE_NAME: $CI_REGISTRY_IMAGE/latex
-        IMAGE_TAG: ubuntu
+        DOCKER_BUILD_PATH: docker-images/latex
+        DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE/latex
+        DOCKER_IMAGE_TAG: ubuntu-${CI_COMMIT_SHORT_SHA}
+        DOCKER_IMAGE_TAG_LATEST: latest
     only:
         changes:
             - docker-images/latex/**/*

@@ -11,13 +11,11 @@
         DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
         DOCKER_IMAGE_TAG_LATEST: ${CI_COMMIT_REF_SLUG}-latest
     before_script:
-        - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD" "$DOCKER_REGISTRY_URL"
+        - make -f /opt/makefiles/Makefile.docker login
     script:
-        - docker build $DOCKER_BUILD_ARGS -t "$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG" -t "$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG_LATEST" "${DOCKER_BUILD_PATH:-.}"
-        - docker push "$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG"
-        - docker push "$DOCKER_IMAGE_NAME:$DOCKER_IMAGE_TAG_LATEST"
+        - make -f /opt/makefiles/Makefile.docker build
     after_script:
-        - docker logout "$DOCKER_REGISTRY_URL"
+        - make -f /opt/makefiles/Makefile.docker logout
     except:
         variables:
             - $CI_COMMIT_MESSAGE =~ /^chore\(release\)/
