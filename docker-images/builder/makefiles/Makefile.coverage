@@ -4,7 +4,7 @@ all: codecov
 
 codecov:
 ifeq ($(shell test -e $(shell npm bin)/codecov && echo -n yes),yes)
-	$$(npm bin)/codecov --flags "${PROJECT_NAME}"
+	$$(npm bin)/codecov --flags "${CODECOV_FLAGS}" --disable=gcov
 endif
 
 .PHONY: all codecov
