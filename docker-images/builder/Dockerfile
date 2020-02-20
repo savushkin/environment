@@ -12,7 +12,6 @@ RUN mkdir -p /tmp/scripts/ /opt/makefiles/
 
 COPY scripts/*.sh /tmp/scripts/
 COPY packages/*.list /tmp/packages/
-COPY makefiles/Makefile.* /opt/makefiles/
 
 RUN apk update \
 && cat /tmp/packages/apk.list | xargs apk add --no-cache \
@@ -22,3 +21,5 @@ RUN apk update \
 && npm config set unsafe-perm true \
 && cat /tmp/packages/npm.list | xargs npm install -g \
 && rm -rf /var/lib/apt/lists/* /var/cache/apk/* /usr/share/man /tmp/*
+
+COPY makefiles/Makefile.* /opt/makefiles/

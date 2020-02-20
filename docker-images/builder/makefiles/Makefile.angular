@@ -3,10 +3,10 @@ PROJECT_NAME?=${CI_PROJECT_NAME}
 all: lint test e2e build
 
 lint:
-	$$(npm bin)/ng lint ${PROJECT_NAME}
+	$$(npm bin)/ng lint "${PROJECT_NAME}"
 
 test:
-	$$(npm bin)/ng test ${PROJECT_NAME} --browsers=${BROWSERS} --reporters ${REPORTERS} --watch=false --code-coverage
+	$$(npm bin)/ng test "${PROJECT_NAME}" --browsers="${BROWSERS}" --reporters "${REPORTERS}" --watch=false --code-coverage
 
 e2e: export SELENIUM_HOSTNAME=$(shell hostname -i | awk '{print $$1}')
 e2e: export SELENIUM_BASE_URL=http://${SELENIUM_HOSTNAME}:4200
@@ -14,6 +14,6 @@ e2e:
 	$$(npm bin)/ng e2e "${PROJECT_NAME}" --configuration="${PROJECT_CONFIGURATION}" --host="${SELENIUM_HOSTNAME}" --port 4200 --no-webdriver-update
 
 build:
-	$$(npm bin)/ng build ${PROJECT_NAME} --configuration="${PROJECT_CONFIGURATION}"
+	$$(npm bin)/ng build "${PROJECT_NAME}" --configuration="${PROJECT_CONFIGURATION}"
 
 .PHONY: lint test e2e build
