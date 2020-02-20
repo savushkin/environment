@@ -1,0 +1,10 @@
+PROJECT_NAME?=${CI_PROJECT_NAME}
+
+all: codecov
+
+codecov:
+ifeq ($(shell test -e $(shell npm bin)/codecov && echo -n yes),yes)
+	$$(npm bin)/codecov --token $$CODECOV_TOKEN
+endif
+
+.PHONY: all codecov

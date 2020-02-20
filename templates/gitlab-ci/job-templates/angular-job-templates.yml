@@ -35,6 +35,7 @@
         - make -f /opt/makefiles/Makefile.angular test
     after_script:
         - npm run ci:test:after_script --if-present
+        - make -f /opt/makefiles/Makefile.coverage
     coverage: '/Statements.*?(\d+(?:\.\d+)?)%/'
     artifacts:
         reports:
