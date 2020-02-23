@@ -6,7 +6,7 @@ lint:
 	$$(npm bin)/ng lint "${PROJECT_NAME}"
 
 test:
-	$$(npm bin)/ng test "${PROJECT_NAME}" --browsers="${BROWSERS}" --reporters "${REPORTERS}" --watch=false --code-coverage
+	$$(npm bin)/ng test "${PROJECT_NAME}" --browsers="${BROWSERS}" --reporters="${REPORTERS}" --watch=false --code-coverage
 
 e2e: export SELENIUM_HOSTNAME=$(shell hostname -i | awk '{print $$1}')
 e2e: export SELENIUM_BASE_URL=http://${SELENIUM_HOSTNAME}:4200
