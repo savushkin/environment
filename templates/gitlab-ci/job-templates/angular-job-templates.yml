@@ -23,7 +23,7 @@
         policy: pull
     variables:
         REPORTERS: junit,spec,kjhtml
-        BROWSERS: ChromiumHeadlessNoSandbox
+        BROWSERS: WebDriverChrome
         NODE_OPTIONS: --max-old-space-size=2560
     before_script:
         - npm run ci:test:before_script --if-present
