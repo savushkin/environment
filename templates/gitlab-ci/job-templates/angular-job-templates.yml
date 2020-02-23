@@ -25,10 +25,6 @@
         REPORTERS: junit,spec,kjhtml
         BROWSERS: ChromiumHeadlessNoSandbox
         NODE_OPTIONS: --max-old-space-size=2560
-    retry:
-        max: 2
-        when:
-            - always
     before_script:
         - npm run ci:test:before_script --if-present
     script:
@@ -86,10 +82,6 @@
     dependencies: []
     variables:
         NODE_OPTIONS: --max-old-space-size=2560
-    retry:
-        max: 2
-        when:
-            - always
     before_script:
         - npm run ci:build:before_script --if-present
     script:
