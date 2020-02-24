@@ -32,12 +32,10 @@
           alias: selenium-hub
         - name: selenium/node-firefox
           command:
-              - HUB_HOST=selenium-hub
-              - /opt/bin/entry_point.sh
+              - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
         - name: selenium/node-chrome
           command:
-              - HUB_HOST=selenium-hub
-              - /opt/bin/entry_point.sh
+              - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
     before_script:
         - npm run ci:test:before_script --if-present
     script:
