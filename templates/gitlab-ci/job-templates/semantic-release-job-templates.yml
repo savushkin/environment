@@ -27,7 +27,6 @@
     extends:
         - .semantic-release
         - .general-environment
-        -
 
 .semantic-release:develop:
     extends:
