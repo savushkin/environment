@@ -1,14 +1,15 @@
 PROJECT_NAME?=${CI_PROJECT_NAME}
 
-all: ci
+script: node_modules
 
-ci:
+node_modules: package.json package-lock.json
 	npm ci
-	$(MAKE) -f /opt/makefiles/Makefile.npm ngcc
+
+after_script: ngcc
 
 ngcc:
 ifeq ($(shell test -e $(shell npm bin)/ngcc && echo -n yes),yes)
 	$$(npm bin)/ngcc --properties es2015 browser module main --first-only --create-ivy-entry-points
 endif
 
-.PHONY: ci ngcc
+.PHONY: script after_script ngcc
