@@ -5,7 +5,6 @@ Dependency installation:
         key: ${CI_COMMIT_REF_SLUG}-npm-dependency
         paths:
             - node_modules/
-        policy: push
     script:
         - make -f /opt/makefiles/Makefile.npm script
     after_script:
