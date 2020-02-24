@@ -31,10 +31,10 @@
         - name: selenium/hub:latest
           alias: selenium-hub
         - name: selenium/node-firefox:latest
-          command:
+          entrypoint:
               - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
         - name: selenium/node-chrome:latest
-          command:
+          entrypoint:
               - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
     before_script:
         - npm run ci:test:before_script --if-present
