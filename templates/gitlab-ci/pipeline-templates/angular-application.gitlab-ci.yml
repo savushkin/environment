@@ -126,7 +126,7 @@ Production Building and publishing docker image:
     dependencies:
         - Production Building angular application
     extends:
-        - .semantic-release:docker:production
+        - .semantic-release:production
         - .angular-application
     variables:
         DOCKER_BUILD_ARGS: --build-arg project=${CI_PROJECT_NAME}

@@ -1,0 +1,11 @@
+PROJECT_NAME?=${CI_PROJECT_NAME}
+RELEASE_BRANCH?=master
+
+script:
+ifeq ($(shell test -e $(shell npm bin)/semantic-release && echo -n yes),yes)
+	$$(npm bin)/semantic-release --repository-url "${CI_REPOSITORY_URL}"
+else
+	semantic-release --repository-url "${CI_REPOSITORY_URL}" --branch "${RELEASE_BRANCH}"
+endif
+
+.PHONY: script

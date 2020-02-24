@@ -44,6 +44,6 @@ ts:push-package:production:library:
     dependencies:
         - ts:build:library
     extends:
-        - .semantic-release:npm:production
+        - .semantic-release:production
         - .production-environment-defenition
         - .typescript-library

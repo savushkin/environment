@@ -59,6 +59,6 @@ ng:push-package:production:library:
     dependencies:
         - ng:build:library
     extends:
-        - .semantic-release:npm:production
+        - .semantic-release:production
         - .production-environment-defenition
         - .angular-library

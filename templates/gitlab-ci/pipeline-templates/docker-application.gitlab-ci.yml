@@ -44,7 +44,7 @@ Stage Building and publishing docker image:
 
 Production Building and publishing docker image:
     extends:
-        - .semantic-release:docker:production
+        - .semantic-release:production
         - .docker-application
     when: manual
 

@@ -83,7 +83,7 @@ Production Building and publishing docker image:
     dependencies:
         - Production Building java application
     extends:
-        - .semantic-release:docker:production
+        - .semantic-release:production
         - .java-application
     variables:
         DOCKER_BUILD_ARGS: --build-arg JAR_FILE=${CI_PROJECT_NAME}-${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}.jar
