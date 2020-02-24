@@ -25,14 +25,11 @@
         REPORTERS: junit,spec,kjhtml
         BROWSERS: WebDriverChrome
         NODE_OPTIONS: --max-old-space-size=2560
-        SELENIUM_HOST: selenium-hub
+        SELENIUM_HOST: selemium-standalone-chrome
         SELENIUM_PORT: 4444
-        HUB_HOST: selenium-hub
     services:
-        - name: selenium/hub:latest
-          alias: selenium-hub
-        - name: selenium/node-firefox:latest
-        - name: selenium/node-chrome:latest
+        - name: selenium/standalone-chrome:latest
+          alias: selemium-standalone-chrome
     before_script:
         - npm run ci:test:before_script --if-present
     script:
