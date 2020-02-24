@@ -30,10 +30,10 @@
     services:
         - name: selenium/hub:latest
           alias: selenium-hub
-        - name: selenium/node-firefox
+        - name: selenium/node-firefox:latest
           command:
               - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
-        - name: selenium/node-chrome
+        - name: selenium/node-chrome:latest
           command:
               - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
     before_script:
