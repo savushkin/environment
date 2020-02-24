@@ -27,15 +27,12 @@
         NODE_OPTIONS: --max-old-space-size=2560
         SELENIUM_HOST: selenium-hub
         SELENIUM_PORT: 4444
+        HUB_HOST: selenium-hub
     services:
         - name: selenium/hub:latest
           alias: selenium-hub
         - name: selenium/node-firefox:latest
-          entrypoint:
-              - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
         - name: selenium/node-chrome:latest
-          entrypoint:
-              - HUB_HOST=selenium-hub /opt/bin/entry_point.sh
     before_script:
         - npm run ci:test:before_script --if-present
     script:
