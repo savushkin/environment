@@ -2,7 +2,7 @@ PROJECTS_BUILD=$(shell node --eval "console.log(Object.entries(require('./angula
 PROJECTS_PRODUCATION_BUILD=$(shell node --eval "console.log(Object.entries(require('./angular.json').projects).filter(([ , { projectType }]) => projectType === 'library').map(([project]) => 'build-producation-' + project).join(' '))")
 PROJECTS_TEST=$(shell node --eval "console.log(Object.entries(require('./angular.json').projects).filter(([ , { projectType }]) => projectType === 'library').map(([project]) => 'test-' + project).join(' '))")
 
-all: lint build build-producation test
+all: lint build-producation build test
 
 lint:
 	$$(npm bin)/ng lint
@@ -25,4 +25,4 @@ build-producation: $(PROJECTS_PRODUCATION_BUILD)
 
 test: $(PROJECTS_TEST)
 
-.PHONY: lint test e2e build-common
+.PHONY: lint build build-producation test $(PROJECTS_PRODUCATION_BUILD) $(PROJECTS_BUILD) $(PROJECTS_TEST)
