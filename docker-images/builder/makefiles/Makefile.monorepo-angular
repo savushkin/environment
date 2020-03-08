@@ -1,0 +1,28 @@
+PROJECTS_BUILD=$(shell node --eval "console.log(Object.entries(require('./angular.json').projects).filter(([ , { projectType }]) => projectType === 'library').map(([project]) => 'build-' + project).join(' '))")
+PROJECTS_PRODUCATION_BUILD=$(shell node --eval "console.log(Object.entries(require('./angular.json').projects).filter(([ , { projectType }]) => projectType === 'library').map(([project]) => 'build-producation-' + project).join(' '))")
+PROJECTS_TEST=$(shell node --eval "console.log(Object.entries(require('./angular.json').projects).filter(([ , { projectType }]) => projectType === 'library').map(([project]) => 'test-' + project).join(' '))")
+
+all: lint build build-producation test
+
+lint:
+	$$(npm bin)/ng lint
+
+$(PROJECTS_BUILD): PROJECT_NAME=$(@:build-%=%)
+$(PROJECTS_BUILD):
+	$$(npm bin)/ng build "$(PROJECT_NAME)"
+
+$(PROJECTS_PRODUCATION_BUILD): PROJECT_NAME=$(@:build-producation-%=%)
+$(PROJECTS_PRODUCATION_BUILD):
+	$$(npm bin)/ng build "$(PROJECT_NAME)" --configuration="production"
+
+$(PROJECTS_TEST): PROJECT_NAME=$(@:test-%=%)
+$(PROJECTS_TEST):
+	$$(npm bin)/ng test "$(PROJECT_NAME)" --watch false --code-coverage
+
+build: $(PROJECTS_BUILD)
+
+build-producation: $(PROJECTS_PRODUCATION_BUILD)
+
+test: $(PROJECTS_TEST)
+
+.PHONY: lint test e2e build-common
