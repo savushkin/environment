@@ -1,6 +1,11 @@
 .commitlint:lint:
     stage: Testing and building modules
     image: registry.gitlab.com/savushkin.i/environment/builder:latest
+    cache:
+        key: ${CI_COMMIT_REF_SLUG}-npm-dependency
+        paths:
+            - node_modules/
+        policy: pull
     script:
         - echo "$CI_COMMIT_MESSAGE" | commitlint
     except:
