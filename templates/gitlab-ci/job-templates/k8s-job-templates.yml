@@ -8,7 +8,8 @@
         - kustomize edit set image ${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
         - cd "${CI_PROJECT_DIR}/"
     script:
-        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | kubectl apply -f -
+        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | tee manifest.yaml
+        - kubectl apply --filename manifest.yaml
 
 .k8s:build-manifest:general:
     extends:

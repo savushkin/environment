@@ -2,8 +2,8 @@ FROM docker:latest
 
 LABEL maintainer="Ivan Savushkin <ivan@savushkin.me>"
 
-ENV KUSTOMIZE_VER 3.5.4
-ENV KUBECTL_VER 1.17.2
+ENV KUSTOMIZE_VER 4.0.4
+ENV KUBECTL_VER 1.20.0
 
 ENV CHROME_BIN=/usr/bin/chromium-browser
 ENV CHROME_PATH=/usr/lib/chromium/
