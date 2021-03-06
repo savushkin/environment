@@ -14,7 +14,7 @@ COPY scripts/*.sh /tmp/scripts/
 COPY packages/*.list /tmp/packages/
 
 RUN apk update \
-&& cat /tmp/packages/apk.list | xargs apk add --no-cache \
+&& cat /tmp/packages/apk.list | xargs apk add --update --no-cache \
 && /tmp/scripts/ssh.sh \
 && /tmp/scripts/kubectl.sh \
 && /tmp/scripts/kustomize.sh \

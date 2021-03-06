@@ -9,4 +9,3 @@ semantic-release@15.13.31
 @semantic-release/gitlab@4.0.4
 @semantic-release/exec@3.3.8
 semantic-release-docker@2.2.0
-maven-semantic-release@4.6.2

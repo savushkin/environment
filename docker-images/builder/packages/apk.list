@@ -10,7 +10,7 @@ npm
 maven
 g++
 make
-python
+python3
 nss
 chromium
 re2
