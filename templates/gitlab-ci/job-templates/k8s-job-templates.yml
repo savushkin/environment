@@ -3,13 +3,16 @@
     cache: {}
     dependencies: []
     image: registry.gitlab.com/savushkin.i/environment/builder:latest
+    variables:
+        DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE
+        DOCKER_IMAGE_TAG: ${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
     before_script:
         - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
-        - kustomize edit set image ${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_SLUG}-${CI_COMMIT_SHORT_SHA}
+        - kustomize edit set image "${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}"
         - cd "${CI_PROJECT_DIR}/"
     script:
-        - kustomize build "k8s/overlays/${PROJECT_CONFIGURATION}" | tee manifest.yaml
-        - kubectl apply --filename manifest.yaml
+        - kustomize build --load_restrictor LoadRestrictionsNone k8s/overlays/${PROJECT_CONFIGURATION} | tee manifest.yaml
+        - kubectl apply --kubeconfig "${KUBECONFIG_NONPROD}" --filename manifest.yaml
 
 .k8s:build-manifest:general:
     extends:
@@ -40,5 +43,8 @@
         - .production-environment
     before_script:
         - cd "k8s/overlays/${PROJECT_CONFIGURATION}"
-        - kustomize edit set image "${CI_REGISTRY_IMAGE}=${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG#"v"}"
+        - kustomize edit set image "${DOCKER_IMAGE_NAME}=${DOCKER_IMAGE_NAME}:${CI_COMMIT_TAG#"v"}"
         - cd "${CI_PROJECT_DIR}/"
+    script:
+        - kustomize build --load_restrictor LoadRestrictionsNone k8s/overlays/${PROJECT_CONFIGURATION} | tee "${PROJECT_NAME}-${PROJECT_CONFIGURATION}.yaml"
+        - kubectl apply --kubeconfig "${KUBECONFIG_PROD}" --filename "${PROJECT_NAME}-${PROJECT_CONFIGURATION}.yaml"
